@@ -21,6 +21,11 @@ eg:
 - Function
 - Module
 
+### Internal Types
+
+- Unknown
+- Null Returned by void functions and operations cannot be assigned
+
 #### Int
 
 A 64 bit signed number
@@ -57,6 +62,7 @@ Single Character Strings are chars and are placed on the stack not heap
 "+ Concat
 "\$ Len
 "[int] Index
+"s Split
 
 #### Array
 
@@ -67,8 +73,35 @@ Dynamic Array
 @+ Push
 @- Pop
 @\$ Len
+@^ Reverse
 @[int] Index
+@[int]: Assign
 @m Map
 @f Filter
 @r Reduce
 @s Sort
+
+#### Hash
+
+Hashmap String to value
+
+{"test": 1, "x": 2.0 }
+
+%k keys
+%v values
+%[string] Index
+%[string]: Assign
+%- Delete
+
+#### File
+
+File Descriptor
+
+'1' STDOUT
+'test'
+
+'> Write
+'>> Append
+'< Read
+'d Directory Listing
+'- Unlink
