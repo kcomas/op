@@ -98,10 +98,59 @@ Hashmap String to value
 File Descriptor
 
 '1' STDOUT
-'test'
+'./test' file
+'tcp://...' Socket
+'http://...' Http
 
+'l Load String
 '> Write
 '>> Append
 '< Read
 'd Directory Listing
 '- Unlink
+
+#### Thread
+
+Function run as a thread. All args are copied by value
+
+handle: ~fn(args)
+
+~ Split/Join
+~@ Join Array of threads
+~ Join Var
+
+#### Function
+
+Does not have scope cannot see parent or child
+
+(arg1,arg2...) {} Def
+name(args) Call
+
+#### Module
+
+Code File, can be imported anywhere
+
+m: 'op://filename' Direct Import
+m: 'l "op://filename" String import
+
+## Operators
+
+### If
+
+```
+? (cond) {
+
+} (elif) {
+
+} {
+else
+}
+```
+
+### While
+
+```
+?? (cond) {
+
+}
+```
