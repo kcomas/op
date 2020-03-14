@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include "error.h"
 
 #define VAR_PFX(NAME) VAR_##NAME
 
@@ -16,6 +17,7 @@
 typedef enum {
     VAR_PFX(UNKNOWN),
     VAR_PFX(NULL),
+    VAR_PFX(ERROR),
     VAR_PFX(INT),
     VAR_PFX(FLOAT),
     VAR_PFX(STRING),
@@ -35,6 +37,7 @@ typedef struct {
 typedef struct {
     var_type type;
     union {
+        var_error error;
         int64_t i;
         double f;
         var_string* string;

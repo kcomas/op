@@ -1,7 +1,8 @@
 .POSIX:
 .SUFFIXES:
 CC = gcc
-CFLAGS = -g -Wall -Wextra
+OO = -O0
+CFLAGS = -std=c11 -g $(OO) -Wall -Wextra
 
 SRC = src
 VAR = $(SRC)/var

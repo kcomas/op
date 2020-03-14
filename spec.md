@@ -25,6 +25,7 @@ eg:
 
 - Unknown
 - Null Returned by void functions and operations cannot be assigned
+- Error Returned by invalid calls, external failures
 
 #### Int
 
@@ -53,7 +54,7 @@ A 64 bit IEEE floating point number
 
 #### String/Char
 
-A utf-8 string
+A utf-8 string null terminated
 
 "Hello World\n"
 

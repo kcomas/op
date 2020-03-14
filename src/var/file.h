@@ -11,4 +11,4 @@ var open_file(var filename);
 
 bool close_file(var filename);
 
-var file_to_string(var fd);
+var file_to_string(var filename);
