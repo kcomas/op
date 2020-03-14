@@ -7,7 +7,7 @@ int main(int argc, char* argv[]) {
         printf("Usage: %s filename\n", argv[0]);
         exit(1);
     }
-    var file = file_new(argv[1]);
+    var file = file_open(argv[1]);
     printf("Using: ");
     printf("%s\n", file.data.file->name);
     file_free(file);

@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <sys/stat.h>
 #include "error.h"
 
 #define VAR_PFX(NAME) VAR_##NAME
@@ -40,7 +39,6 @@ typedef struct {
 } var_string;
 
 typedef struct {
-    struct stat buf;
     int fd;
     char name[];
 } var_file;
