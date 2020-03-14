@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -g -Wall -Wextra
 
 SRC = src
-VAR = src/var
+VAR = $(SRC)/var
 
 all: op
 
