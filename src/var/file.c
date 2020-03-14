@@ -1,6 +1,6 @@
 
 #include "file.h"
 
-var file_to_string(var filename) {
+extern inline var file_new(char filename[]);
 
-}
+extern inline void file_free(var file);

@@ -4,11 +4,15 @@
 #include "var.h"
 #include <fcntl.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 
-var open_file(var filename);
+inline var file_new(char filename[]) {
+    var_file* f = calloc(1, sizeof(var_file) + strlen(filename) + 1);
+    strcpy(f->name, filename);
+    f->fd = -1;
+    return VAR_FILE(f);
+}
 
-bool close_file(var filename);
-
-var file_to_string(var filename);
+inline void file_free(var file) {
+    free(file.data.file);
+}
