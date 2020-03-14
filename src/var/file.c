@@ -1,5 +1,6 @@
 
 #include "file.h"
+#include "string.h"
 
 var file_open(char filename[]) {
     int fd = open(filename, O_RDWR);
@@ -11,3 +12,15 @@ var file_open(char filename[]) {
 }
 
 extern inline void file_free(var file);
+
+var file_read(var file) {
+    struct stat buf;
+    if (stat(file.data.file->name, &buf) == -1) return VAR_ERROR(CANNOT_READ_FILE);
+    var string = string_new(buf.st_size);
+    string.data.string->len = buf.st_size;
+    if (read(file.data.file->fd, string.data.string->data, buf.st_size) != buf.st_size) {
+        string_free(string);
+        return VAR_ERROR(CANNOT_READ_FILE);
+    }
+    return string;
+}

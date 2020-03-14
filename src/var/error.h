@@ -5,4 +5,5 @@
 
 typedef enum {
     ERROR_PFX(FILE_NOT_FOUND),
+    ERROR_PFX(CANNOT_READ_FILE)
 } var_error;

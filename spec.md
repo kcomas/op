@@ -54,7 +54,7 @@ A 64 bit IEEE floating point number
 
 #### String/Char
 
-A utf-8 string null terminated
+A utf-8 string
 
 "Hello World\n"
 
