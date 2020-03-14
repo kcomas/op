@@ -9,6 +9,10 @@
 
 #define VAR_PFX(NAME) VAR_##NAME
 
+#define VAR_NEW(TYPE, DATA) (var) { .type = VAR_PFX(TYPE), .data = DATA }
+
+#define VAR_STRING(DATA) VAR_NEW(STRING, { .string = DATA })
+
 typedef enum {
     VAR_PFX(UNKNOWN),
     VAR_PFX(NULL),
@@ -24,11 +28,16 @@ typedef enum {
 } var_type;
 
 typedef struct {
+    size_t size, len;
+    uint8_t data[];
+} var_string;
+
+typedef struct {
     var_type type;
     union {
-        int64_t int;
-        double float;
-        uint8_t string[];
+        int64_t i;
+        double f;
+        var_string* string;
         int file;
     } data;
 } var;
