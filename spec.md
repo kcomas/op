@@ -154,3 +154,8 @@ else
 
 }
 ```
+
+### Cast
+
+(#) Cast to String
+(^) Cast to File
