@@ -9,6 +9,7 @@ int main(int argc, char* argv[]) {
         printf("Usage: %s filename\n", argv[0]);
         exit(1);
     }
+    var error = VAR_ERROR(OK);
     var file = file_open(argv[1]);
     printf("Using: ");
     printf("%s\n", file.data.file->name);
@@ -17,6 +18,7 @@ int main(int argc, char* argv[]) {
     string_print(string);
     putchar('\n');
     token* t = token_new(MAX_TOKEN_SIZE);
+    while (tokenize_string_next(string, t, &error)) print_token(t);
     token_free(t);
     string_free(string);
     return 0;

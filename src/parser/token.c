@@ -30,7 +30,7 @@ static bool token_check_len(token* t, var* error) {
 
 static bool parse_var(var string, token* t, var* error) {
     char c = string.data.string->data[t->fpos];
-    while ((c >= 'a' && c <= 'z') || ('c' >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+    while (isalpha(c) || isdigit(c)) {
         token_set_char(c, t);
         finc(t);
         if (!token_check_len(t, error)) return false;
@@ -42,12 +42,12 @@ static bool parse_var(var string, token* t, var* error) {
 
 static bool parse_int(var string, token* t, var* error) {
     char c = string.data.string->data[t->fpos];
-    while (c >= '0' && c <= '9') {
+    while (isdigit(c)) {
         token_set_char(c, t);
         finc(t);
         if (!token_check_len(t, error)) return false;
         c = string.data.string->data[t->fpos];
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) return parse_var(string, t, error);
+        if (isalpha(c)) return parse_var(string, t, error);
     }
     t->type = TOKEN_PFX(INT);
     return true;
@@ -79,8 +79,8 @@ bool tokenize_string_next(var string, token* t, var* error) {
     if (t->fpos >= string.data.string->len) return false;
     char c = string.data.string->data[t->fpos];
     while (c == ' ' || c == '\t') c = string.data.string->data[++t->fpos];
-    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) return parse_var(string, t, error);
-    if (c >= '0' && c <= '9') return parse_int(string, t, error);
+    if (isalpha(c)) return parse_var(string, t, error);
+    if (isdigit(c)) return parse_int(string, t, error);
     switch (c) {
         case '\n':
             token_set_char(c, t);
@@ -100,6 +100,7 @@ bool tokenize_string_next(var string, token* t, var* error) {
             finc(t);
             t->type = TOKEN_PFX(FILE);
             return true;
+        case ':': return single_char(c, TOKEN_PFX(ASSIGN), t);
         case '$': return single_char(c, TOKEN_PFX(SELF), t);
         case '(': return single_char(c, TOKEN_PFX(LBRACE), t);
         case ')': return single_char(c, TOKEN_PFX(RBRACE), t);
@@ -123,4 +124,10 @@ bool tokenize_string_next(var string, token* t, var* error) {
             *error = VAR_ERROR(INVALID_TOKEN_FOUND);
             return false;
     }
+}
+
+void print_token(token* t) {
+    printf("char %lu, line %lu, ", t->char_idx, t->line_idx);
+    for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
+    putchar('\n');
 }

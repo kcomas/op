@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <ctype.h>
 #include "../var/var.h"
 #include "../var/string.h"
 
@@ -12,6 +13,7 @@ typedef enum {
     TOKEN_PFX(INT),
     TOKEN_PFX(STRING),
     TOKEN_PFX(FILE),
+    TOKEN_PFX(ASSIGN),
     TOKEN_PFX(SELF),
     TOKEN_PFX(LBRACE),
     TOKEN_PFX(RBRACE),
@@ -47,3 +49,5 @@ inline void token_free(token* t) {
 }
 
 bool tokenize_string_next(var string, token* t, var* error);
+
+void print_token(token* t);
