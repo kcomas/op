@@ -78,7 +78,12 @@ bool tokenize_string_next(var string, token* t, var* error) {
     t->len = 0;
     if (t->fpos >= string.data.string->len) return false;
     char c = string.data.string->data[t->fpos];
-    while (c == ' ' || c == '\t') c = string.data.string->data[++t->fpos];
+    while (c == ' ' || c == '\t') {
+        finc(t);
+        t->char_idx++;
+        t->pos++;
+        c = string.data.string->data[t->fpos];
+    }
     if (isalpha(c)) return parse_var(string, t, error);
     if (isdigit(c)) return parse_int(string, t, error);
     switch (c) {
@@ -127,7 +132,7 @@ bool tokenize_string_next(var string, token* t, var* error) {
 }
 
 void print_token(token* t) {
-    printf("char %lu, line %lu, ", t->char_idx, t->line_idx);
+    printf("line %lu, char %lu, ", t->line_idx, t->char_idx);
     for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
     putchar('\n');
 }
