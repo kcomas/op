@@ -13,10 +13,10 @@ eg:
 
 - Int
 - Float .
-- String/Char "
+- String/Char #"
 - Array @
 - Hash %
-- File '
+- File ^'
 - Thread ~
 - Function
 - Module
@@ -60,10 +60,10 @@ A utf-8 string
 
 Single Character Strings are chars and are placed on the stack not heap
 
-"+ Concat
-"\$ Len
-"[int] Index
-"s Split
+\#+ Concat
+\#\$ Len
+\#[int] Index
+\#s Split
 
 #### Array
 
@@ -103,11 +103,11 @@ File Descriptor
 'tcp://...' Socket
 'http://...' Http
 
-'l Load String
-'> Write
-'< Read
-'d Directory Listing
-'- Unlink
+^l Load String
+^> Write
+^< Read
+^d Directory Listing
+^- Unlink
 
 #### Thread
 

@@ -25,17 +25,20 @@ typedef enum {
     TOKEN_PFX(END)
 } token_type;
 
-#define MAX_TOKEN_LEN 40
+#define MAX_TOKEN_SIZE 200
 
 typedef struct {
     token_type type;
-    size_t char_idx, line_idx, start_pos, end_pos, max_len;
+    size_t char_idx, line_idx, pos, size, len;
+    size_t fchar_idx, fline_idx, fpos;
     char data[];
 } token;
 
-inline token* token_new(size_t len) {
-    token* t = calloc(1, sizeof(token) + len);
-    t->max_len = len;
+inline token* token_new(size_t size) {
+    token* t = calloc(1, sizeof(token) + size);
+    t->size = size;
+    t->fchar_idx = 1;
+    t->fline_idx = 1;
     return t;
 }
 
@@ -43,4 +46,4 @@ inline void token_free(token* t) {
     free(t);
 }
 
-bool tokenize_string_next(var string, token* t);
+bool tokenize_string_next(var string, token* t, var* error);

@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     file_free(file);
     string_print(string);
     putchar('\n');
-    token* t = token_new(MAX_TOKEN_LEN);
+    token* t = token_new(MAX_TOKEN_SIZE);
     token_free(t);
     string_free(string);
     return 0;
