@@ -4,6 +4,12 @@
 #include "var/string.h"
 #include "parser/token.h"
 
+void check_error(var error) {
+    if (error.data.error != ERROR_PFX(OK)) {
+        exit(1);
+    }
+}
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         printf("Usage: %s filename\n", argv[0]);
@@ -19,6 +25,7 @@ int main(int argc, char* argv[]) {
     putchar('\n');
     token* t = token_new(MAX_TOKEN_SIZE);
     while (tokenize_string_next(string, t, &error)) print_token(t);
+    check_error(error);
     token_free(t);
     string_free(string);
     return 0;
