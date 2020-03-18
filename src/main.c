@@ -2,6 +2,7 @@
 #include "var/var.h"
 #include "var/file.h"
 #include "var/string.h"
+#include "parser/token.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -12,9 +13,11 @@ int main(int argc, char* argv[]) {
     printf("Using: ");
     printf("%s\n", file.data.file->name);
     var string = file_read(file);
+    file_free(file);
     string_print(string);
     putchar('\n');
-    file_free(file);
+    token* t = token_new(MAX_TOKEN_LEN);
+    token_free(t);
     string_free(string);
     return 0;
 }

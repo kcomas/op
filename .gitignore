@@ -1,3 +1,4 @@
 src/*.o
 op
 src/var/*.o
+src/parser/*.o
