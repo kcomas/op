@@ -6,6 +6,7 @@ CFLAGS = -std=c11 -g $(OO) -Wall -Wextra
 
 SRC = src
 VAR = $(SRC)/var
+PARSER = $(SRC)/parser
 
 all: op
 

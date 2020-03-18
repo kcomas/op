@@ -105,7 +105,6 @@ File Descriptor
 
 'l Load String
 '> Write
-'>> Append
 '< Read
 'd Directory Listing
 '- Unlink
