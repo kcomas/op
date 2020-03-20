@@ -1,6 +1,26 @@
 
 #include "token.h"
 
+const char* token_names[] = {
+    "NONE",
+    "VAR",
+    "INT",
+    "STRING",
+    "FILE",
+    "ASSIGN",
+    "SELF",
+    "LBRACE",
+    "RBRACE",
+    "LBRACKET",
+    "RBRACKET",
+    "INTEQ",
+    "INTADD",
+    "INTSUB",
+    "FILEWRITE",
+    "IF",
+    "END"
+};
+
 extern inline token* token_new(size_t len);
 
 extern inline void token_free(token* t);
@@ -132,7 +152,7 @@ bool tokenize_string_next(var string, token* t, var* error) {
 }
 
 void print_token(token* t) {
-    printf("line %lu, char %lu, ", t->line_idx, t->char_idx);
+    printf("line %lu, char %lu, %s ", t->line_idx, t->char_idx, token_names[t->type]);
     for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
     putchar('\n');
 }
