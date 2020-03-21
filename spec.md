@@ -69,7 +69,7 @@ Single Character Strings are chars and are placed on the stack not heap
 
 Dynamic Array
 
-[1, 2.0, "Asdf"]
+@[1, 2.0, "Asdf"]
 
 @+ Push
 @- Pop
@@ -86,7 +86,7 @@ Dynamic Array
 
 Hashmap String to value
 
-{"test": 1, "x": 2.0 }
+%["test": 1, "x": 2.0 ]
 
 %k keys
 %v values
