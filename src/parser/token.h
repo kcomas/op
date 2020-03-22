@@ -24,6 +24,7 @@ typedef enum {
     TOKEN_PFX(INTSUB),
     TOKEN_PFX(FILEWRITE),
     TOKEN_PFX(IF),
+    TOKEN_PFX(WHILE),
     TOKEN_PFX(END)
 } token_type;
 

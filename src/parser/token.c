@@ -18,6 +18,7 @@ const char* token_names[] = {
     "INTSUB",
     "FILEWRITE",
     "IF",
+    "WHILE",
     "END"
 };
 
@@ -144,7 +145,18 @@ bool tokenize_string_next(var string, token* t, var* error) {
                     *error = VAR_ERROR(INVALID_TOKEN_FOUND);
                     return false;
             }
-        case '?': return single_char(c, TOKEN_PFX(INTSUB), t);
+        case '?':
+            token_set_char(c, t);
+            finc(t);
+            c = string.data.string->data[t->fpos];
+            if (c == '?') {
+                token_set_char(c, t);
+                finc(t);
+                t->type= TOKEN_PFX(WHILE);
+            } else {
+                t->type = TOKEN_PFX(IF);
+            }
+            return true;
         default:
             *error = VAR_ERROR(INVALID_TOKEN_FOUND);
             return false;
