@@ -10,14 +10,18 @@ PARSER = $(SRC)/parser
 
 all: op
 
-op: $(SRC)/main.o $(VAR)/file.o $(VAR)/string.o $(PARSER)/token.o
-	$(CC) -o op $(SRC)/main.o $(VAR)/file.o $(VAR)/string.o $(PARSER)/token.o
+OP = $(SRC)/main.o $(VAR)/file.o $(VAR)/char.o $(VAR)/string.o $(PARSER)/token.o
+
+op: $(OP)
+	$(CC) -o op $(OP)
 
 $(SRC)/main.o: $(SRC)/main.c
 
 $(PARSER)/token.o: $(PARSER)/token.c $(PARSER)/token.h
 
 $(VAR)/file.o: $(VAR)/file.c $(VAR)/file.h
+
+$(VAR)/char.o: $(VAR)/char.c $(VAR)/char.h
 
 $(VAR)/string.o: $(VAR)/string.c $(VAR)/string.h
 

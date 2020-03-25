@@ -1,27 +1,6 @@
 
 #include "token.h"
 
-const char* token_names[] = {
-    "NONE",
-    "VAR",
-    "INT",
-    "STRING",
-    "FILE",
-    "ASSIGN",
-    "SELF",
-    "LBRACE",
-    "RBRACE",
-    "LBRACKET",
-    "RBRACKET",
-    "INTEQ",
-    "INTADD",
-    "INTSUB",
-    "FILEWRITE",
-    "IF",
-    "WHILE",
-    "END"
-};
-
 extern inline token* token_new(size_t len);
 
 extern inline void token_free(token* t);
@@ -135,6 +114,16 @@ bool tokenize_string_next(var string, token* t, var* error) {
         case '=': return single_char(c, TOKEN_PFX(INTEQ), t);
         case '+': return single_char(c, TOKEN_PFX(INTADD), t);
         case '-': return single_char(c, TOKEN_PFX(INTSUB), t);
+        case '<':
+            token_set_char(c, t);
+            finc(t);
+            c = string.data.string->data[t->fpos];
+            switch (c) {
+                case '=': return single_char(c, TOKEN_PFX(INTLESSEQ), t);
+                default: t->type = TOKEN_PFX(INTLESS);
+            }
+            return true;
+        case '|': return single_char(c, TOKEN_PFX(INTEQ), t);
         case '^':
             token_set_char(c, t);
             finc(t);
@@ -164,7 +153,37 @@ bool tokenize_string_next(var string, token* t, var* error) {
 }
 
 void print_token(token* t) {
-    printf("line %lu, char %lu, %s ", t->line_idx, t->char_idx, token_names[t->type]);
+    static const char* token_names[] = {
+        "NONE",
+        "VAR",
+        "INT",
+        "CHHAR",
+        "STRING",
+        "FILE",
+        "ASSIGN",
+        "SELF",
+        "LBRACE",
+        "RBRACE",
+        "LBRACKET",
+        "RBRACKET",
+        "INTEQ",
+        "INTLESS",
+        "INTLESSEQ",
+        "INTADD",
+        "INTSUB",
+        "INTOR",
+        "FILEWRITE",
+        "IF",
+        "WHILE",
+        "END"
+    };
+    printf("line %lu, ", t->line_idx);
+    if (t->line_idx < 10) printf("  ");
+    else if (t->line_idx < 100) printf(" ");
+    printf("char %lu, ", t->char_idx);
+    if (t->char_idx < 10) printf("  ");
+    else if (t->char_idx < 100) printf(" ");
+    printf("%s ", token_names[t->type]);
     for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
     putchar('\n');
 }
