@@ -177,13 +177,26 @@ void print_token(token* t) {
         "WHILE",
         "END"
     };
-    printf("line %lu, ", t->line_idx);
-    if (t->line_idx < 10) printf("  ");
-    else if (t->line_idx < 100) printf(" ");
-    printf("char %lu, ", t->char_idx);
-    if (t->char_idx < 10) printf("  ");
-    else if (t->char_idx < 100) printf(" ");
+    printf("line %lu ", t->line_idx);
+    if (t->line_idx < 10) printf("   ");
+    else if (t->line_idx < 100) printf("  ");
+    printf("char %lu ", t->char_idx);
+    if (t->char_idx < 10) printf("   ");
+    else if (t->char_idx < 100) printf("  ");
     printf("%s ", token_names[t->type]);
-    for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
+    size_t l = 15 - strlen(token_names[t->type]);
+    for (size_t i = 0; i < l; i++) putchar(' ');
+    switch (t->type) {
+        case TOKEN_PFX(END):
+            switch (t->data[0]) {
+                case '\n':
+                    printf("\\n");
+                    break;
+                default:
+                    putchar(t->data[0]);
+            }
+            break;
+        default: for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
+    }
     putchar('\n');
 }
