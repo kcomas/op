@@ -192,8 +192,7 @@ void print_token(token* t) {
                 case '\n':
                     printf("\\n");
                     break;
-                default:
-                    putchar(t->data[0]);
+                default: putchar(t->data[0]);
             }
             break;
         default: for (size_t i = 0; i < t->len; i++) putchar(t->data[i]);
