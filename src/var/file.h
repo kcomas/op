@@ -14,4 +14,4 @@ inline void file_free(var file) {
     free(file.data.file);
 }
 
-var file_read(var file);
+var file_read_to_string(var file);

@@ -12,5 +12,3 @@ var string_from_c(const char* c_string) {
     memcpy(s.data.string->data, c_string, size);
     return s;
 }
-
-extern inline void string_print(var string);

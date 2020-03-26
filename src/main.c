@@ -17,11 +17,10 @@ int main(int argc, char* argv[]) {
     }
     var error = VAR_ERROR(OK);
     var file = file_open(argv[1]);
-    printf("Using: ");
-    printf("%s\n", file.data.file->name);
-    var string = file_read(file);
+    printf("Using: %s\n", file.data.file->name);
+    var string = file_read_to_string(file);
     file_free(file);
-    string_print(string);
+    printf("%s", string.data.string->data);
     putchar('\n');
     token* t = token_new(MAX_TOKEN_SIZE);
     while (tokenize_string_next(string, t, &error)) print_token(t);

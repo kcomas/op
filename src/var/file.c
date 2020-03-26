@@ -13,7 +13,7 @@ var file_open(char filename[]) {
 
 extern inline void file_free(var file);
 
-var file_read(var file) {
+var file_read_to_string(var file) {
     struct stat buf;
     if (stat(file.data.file->name, &buf) == -1) return VAR_ERROR(CANNOT_READ_FILE);
     var string = string_new(buf.st_size);

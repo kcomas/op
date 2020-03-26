@@ -20,6 +20,8 @@
 
 #define VAR_FILE(DATA) VAR_NEW(FILE, { .file = DATA })
 
+#define VAR_HASH(DATA) VAR_NEW(HASH, { .hash = DATA })
+
 typedef enum {
     VAR_PFX(NULL),
     VAR_PFX(UNKNOWN),
@@ -50,7 +52,9 @@ typedef struct {
     char name[];
 } var_file;
 
-typedef struct {
+typedef struct _var_hash var_hash;
+
+typedef struct _var {
     var_type type;
     union {
         var_error error;
@@ -59,5 +63,19 @@ typedef struct {
         var_char c;
         var_string* string;
         var_file* file;
+        var_hash* hash;
     } data;
 } var;
+
+typedef struct _bucket {
+    var_string* key;
+    var value;
+    struct _bucket* next;
+} bucket;
+
+typedef struct _var_hash {
+    size_t size, len;
+    bucket* buckets[];
+} var_hash;
+
+
