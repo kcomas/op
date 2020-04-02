@@ -5,10 +5,14 @@ extern inline var* var_new(var_type type, var_data data);
 
 extern void hash_free(var* hash);
 
+extern var* string_clone_resize(size_t new_size, var* string);
+
 extern var* hash_clone_resize(size_t new_size, var* hash);
 
 var* var_clone(var* v) {
     switch (v->type) {
+        case VAR_PFX(STRING):
+            return string_clone_resize(v->data.string->size, v);
         case VAR_PFX(HASH):
             return hash_clone_resize(v->data.hash->size, v);
         default:
@@ -16,13 +20,14 @@ var* var_clone(var* v) {
     }
 }
 
-var* var_assign(var* v) {
+var* var_copy(var* v) {
     switch (v->type) {
         case VAR_PFX(INT):
         case VAR_PFX(FLOAT):
         case VAR_PFX(CHAR):
             return var_new(v->type, v->data);
         default:
+            v->rc++;
             return v;
     }
 }

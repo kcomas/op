@@ -162,13 +162,13 @@ else
 
 ### Assign
 
-Shallow Copy
+Primitive Copy/Ref Copy
 
 a: 1
 
 ### Clone
 
-Deep Copy
+Primitive Copy/Deep Copy
 
 a: @[1]
 b:: a

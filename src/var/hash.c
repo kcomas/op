@@ -5,14 +5,14 @@ extern inline var* hash_new(size_t size);
 
 extern inline void hash_free(var* hash);
 
-static inline bucket* bucket_new(var* key, var* value) {
+static inline bucket* bucket_new(var* key, var* value, bool clone) {
 #if TYPECHECK
     assert(key->type == VAR_PFX(STRING));
 #endif
     bucket* b = calloc(1, sizeof(bucket));
     b->key = string_clone_resize(key->data.string->len, key);
-    value->rc++;
-    b->value = value;
+    if (clone) b->value = var_clone(value);
+    else b->value = var_copy(value);
     return b;
 }
 
@@ -43,7 +43,7 @@ void hash_free(var* hash) {
     }
 }
 
-var* hash_clone_resize(size_t new_size, var* hash) {
+var* _hash_clone_resize(size_t new_size, var* hash, bool clone) {
 #if TYPECHECK
     assert(hash->data.hash->size < new_size);
 #endif
@@ -52,19 +52,21 @@ var* hash_clone_resize(size_t new_size, var* hash) {
         if (hash->data.hash->data[i] == NULL) continue;
         bucket* b = hash->data.hash->data[i];
         while (b != NULL) {
-            hash_insert(b->key, b->value, &new_hash);
+            _hash_insert(b->key, b->value, &new_hash, clone);
             b = b->next;
         }
     }
     return new_hash;
 }
 
-void hash_insert(var* key, var* value, var** hash) {
+extern inline var* hash_clone_resize(size_t new_size, var* hash);
+
+void _hash_insert(var* key, var* value, var** hash, bool clone) {
 #if TYPECHECK
         assert(key->type == VAR_PFX(STRING));
         assert((*hash)->type == VAR_PFX(HASH));
 #endif
-        bucket* b = bucket_new(key, value);
+        bucket* b = bucket_new(key, value, clone);
         size_t pos = hash_string(key) % (*hash)->data.hash->size;
         if ((*hash)->data.hash->data[pos] == NULL) {
             (*hash)->data.hash->data[pos] = b;
@@ -76,10 +78,12 @@ void hash_insert(var* key, var* value, var** hash) {
         (*hash)->data.hash->len++;
         if ((*hash)->data.hash->len == (*hash)->data.hash->size) {
             var* tmp = *hash;
-            *hash = hash_clone_resize(tmp->data.hash->size * HASH_GROWTH, tmp);
+            *hash = _hash_clone_resize(tmp->data.hash->size * HASH_GROWTH, tmp, clone);
             var_free(tmp);
         }
 }
+
+extern inline void hash_insert(var* key, var* value, var** hash);
 
 var* hash_get(var* key, var* hash) {
 #if TYPECHECK

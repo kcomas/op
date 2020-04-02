@@ -14,8 +14,16 @@ void hash_free(var* hash);
 
 #define HASH_GROWTH 2
 
-var* hash_clone_resize(size_t new_size, var* hash);
+var* _hash_clone_resize(size_t new_size, var* hash, bool clone);
 
-void hash_insert(var* key, var* value, var** hash);
+inline var* hash_clone_resize(size_t new_size, var* hash) {
+    return _hash_clone_resize(new_size, hash, true);
+}
+
+void _hash_insert(var* key, var* value, var** hash, bool clone);
+
+inline void hash_insert(var* key, var* value, var** hash) {
+    _hash_insert(key, value, hash, false);
+}
 
 var* hash_get(var* key, var* hash);

@@ -97,7 +97,7 @@ inline var* var_new(var_type type, var_data data) {
     return v;
 }
 
-var* var_assign(var* v);
+var* var_clone(var* v);
 
 var* var_copy(var* v);
 
