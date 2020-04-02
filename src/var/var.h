@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <unistd.h>
 #include <assert.h>
 
 #ifndef TYPECHECK
@@ -83,19 +84,19 @@ typedef union _var_data {
 
 typedef struct _var {
     var_type type;
+    uint32_t rc;
     var_data data;
 } var;
 
 inline var* var_new(var_type type, var_data data) {
     var* v = calloc(1, sizeof(var));
     v->type = type;
+    v->rc = 1;
     v->data = data;
     return v;
 }
 
-inline void var_free(var* v) {
-    free(v);
-}
+void var_free(var* v);
 
 typedef struct _bucket {
     var* key;
@@ -107,5 +108,4 @@ typedef struct _var_hash {
     size_t size, len;
     bucket* data[];
 } var_hash;
-
 

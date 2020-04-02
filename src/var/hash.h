@@ -9,13 +9,7 @@ inline var* hash_new(size_t size) {
     return VAR_HASH(h);
 }
 
-inline void hash_free(var* hash) {
-#if TYPECHECK
-    assert(hash->type == VAR_PFX(HASH));
-#endif
-    free(hash->data.hash);
-    var_free(hash);
-}
+void hash_free(var* hash);
 
 #define HASH_GROWTH 2
 

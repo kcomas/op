@@ -41,6 +41,23 @@ static var* hash_clone_resize(size_t new_size, var* hash) {
     return new_hash;
 }
 
+void hash_free(var* hash) {
+#if TYPECHECK
+    assert(hash->type == VAR_PFX(HASH));
+#endif
+    for (size_t i = 0; i < hash->data.hash->size; i++) {
+        if (hash->data.hash->data[i] == NULL) continue;
+        bucket* b = hash->data.hash->data[i];
+        while (b != NULL) {
+            bucket* tmp = NULL;
+            b = b->next;
+            var_free(tmp->key);
+            var_free(tmp->value);
+            free(tmp);
+        }
+    }
+}
+
 void hash_insert(var* string, var* value, var** hash) {
 #if TYPECHECK
         assert(string->type == VAR_PFX(STRING));
@@ -59,6 +76,6 @@ void hash_insert(var* string, var* value, var** hash) {
         if ((*hash)->data.hash->len == (*hash)->data.hash->size) {
             var* tmp = *hash;
             *hash = hash_clone_resize(tmp->data.hash->size * HASH_GROWTH, tmp);
-            hash_free(tmp);
+            var_free(tmp);
         }
 }
