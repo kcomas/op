@@ -159,3 +159,16 @@ else
 
 (#) Cast to String
 (^) Cast to File
+
+### Assign
+
+Shallow Copy
+
+a: 1
+
+### Clone
+
+Deep Copy
+
+a: @[1]
+b:: a

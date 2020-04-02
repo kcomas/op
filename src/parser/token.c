@@ -105,7 +105,18 @@ bool tokenize_string_next(var string, token* t, var* error) {
             finc(t);
             t->type = TOKEN_PFX(FILE);
             return true;
-        case ':': return single_char(c, TOKEN_PFX(ASSIGN), t);
+        case ':':
+            token_set_char(c, t);
+            finc(t);
+            c = string.data.string->data[t->fpos];
+            if (c == ':') {
+                token_set_char(c, t);
+                finc(t);
+                t->type = TOKEN_PFX(CLONE);
+            } else {
+                t->type = TOKEN_PFX(ASSIGN);
+            }
+            return true;
         case '$': return single_char(c, TOKEN_PFX(SELF), t);
         case '(': return single_char(c, TOKEN_PFX(LBRACE), t);
         case ')': return single_char(c, TOKEN_PFX(RBRACE), t);
@@ -161,6 +172,7 @@ void print_token(token* t) {
         "STRING",
         "FILE",
         "ASSIGN",
+        "CLONE",
         "SELF",
         "LBRACE",
         "RBRACE",
