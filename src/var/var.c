@@ -16,7 +16,27 @@ var* var_clone(var* v) {
     }
 }
 
+var* var_copy(var* v) {
+    switch (v->type) {
+        case VAR_PFX(INT):
+        case VAR_PFX(FLOAT):
+        case VAR_PFX(CHAR):
+            return var_new(v->type, v->data);
+        default:
+            return v;
+    }
+}
+
 void var_free(var* v) {
+    switch (v->type) {
+        case VAR_PFX(INT):
+        case VAR_PFX(FLOAT):
+        case VAR_PFX(CHAR):
+            free(v);
+            return;
+        default:
+            break;
+    }
     if (--v->rc > 0) return;
     switch (v->type) {
         case VAR_PFX(STRING):

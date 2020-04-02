@@ -99,6 +99,8 @@ inline var* var_new(var_type type, var_data data) {
 
 var* var_clone(var* v);
 
+var* var_copy(var* v);
+
 void var_free(var* v);
 
 typedef struct _bucket {
