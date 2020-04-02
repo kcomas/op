@@ -2,7 +2,8 @@
 .SUFFIXES:
 CC = gcc
 OO = -O0
-CFLAGS = -std=c11 -g $(OO) -Wall -Wextra
+TYPECHECK = true
+CFLAGS = -std=c11 -g $(OO) -Wall -Wextra -D TYPECHECK=$(TYPECHECK)
 
 SRC = src
 VAR = $(SRC)/var

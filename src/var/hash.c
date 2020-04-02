@@ -10,7 +10,8 @@ static inline bucket* bucket_new(var* key, var* value) {
     assert(key->type == VAR_PFX(STRING));
 #endif
     bucket* b = calloc(1, sizeof(bucket));
-    b->key = key;
+    b->key = string_clone_resize(key->data.string->len, key);
+    value->rc++;
     b->value = value;
     return b;
 }
@@ -23,22 +24,6 @@ static inline size_t hash_string(var* key) {
     for (size_t i = 0; i < key->data.string->len; i++)
         hash = key->data.string->data[i] + (hash << 6) + (hash << 16) - hash;
     return hash;
-}
-
-static var* hash_clone_resize(size_t new_size, var* hash) {
-#if TYPECHECK
-    assert(hash->data.hash->size < new_size);
-#endif
-    var* new_hash = hash_new(new_size);
-    for (size_t i = 0; i < hash->data.hash->size; i++) {
-        if (hash->data.hash->data[i] == NULL) continue;
-        bucket* b = hash->data.hash->data[i];
-        while (b != NULL) {
-            hash_insert(b->key, b->value, &new_hash);
-            b = b->next;
-        }
-    }
-    return new_hash;
 }
 
 void hash_free(var* hash) {
@@ -56,6 +41,22 @@ void hash_free(var* hash) {
             free(tmp);
         }
     }
+}
+
+var* hash_clone_resize(size_t new_size, var* hash) {
+#if TYPECHECK
+    assert(hash->data.hash->size < new_size);
+#endif
+    var* new_hash = hash_new(new_size);
+    for (size_t i = 0; i < hash->data.hash->size; i++) {
+        if (hash->data.hash->data[i] == NULL) continue;
+        bucket* b = hash->data.hash->data[i];
+        while (b != NULL) {
+            hash_insert(b->key, b->value, &new_hash);
+            b = b->next;
+        }
+    }
+    return new_hash;
 }
 
 void hash_insert(var* string, var* value, var** hash) {
