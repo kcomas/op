@@ -1,13 +1,13 @@
 
 #pragma once
 
-#define ERROR_PFX(NAME) ERROR_##NAME
+#include "var.h"
 
-typedef enum {
-    ERROR_PFX(OK),
-    ERROR_PFX(FILE_NOT_FOUND),
-    ERROR_PFX(CANNOT_READ_FILE),
-    ERROR_PFX(INVALID_TOKEN_FOUND),
-    ERROR_PFX(MAX_TOKEN_LEN_EXCEEDED),
-    ERROR_PFX(INVALID_BYTES_FOR_CHAR)
-} var_error;
+#define ERROR_UPDATE(ERROR, TYPE) (ERROR->data.error = ERROR_PFX(TYPE))
+
+inline void error_free(var* error) {
+#if TYPECHECK
+    assert(error->type == VAR_PFX(ERROR));
+#endif
+    var_free(error);
+}

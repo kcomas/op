@@ -8,7 +8,7 @@ int8_t char_conts(uint8_t c) {
     return -1;
 }
 
-var char_from_bytes(uint8_t* bytes, size_t len) {
+var* char_from_bytes(uint8_t* bytes, size_t len) {
     if (len < 1 || len > 4) return VAR_ERROR(INVALID_BYTES_FOR_CHAR);
     int8_t conts = char_conts(bytes[0]);
     if (conts == -1) return VAR_ERROR(INVALID_BYTES_FOR_CHAR);

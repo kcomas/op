@@ -6,11 +6,19 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "error.h"
+#include <assert.h>
+
+#ifndef TYPECHECK
+    #define TYPECHECK true
+#endif
 
 #define VAR_PFX(NAME) VAR_##NAME
 
-#define VAR_NEW(TYPE, DATA) (var) { .type = VAR_PFX(TYPE), .data = DATA }
+#define ERROR_PFX(NAME) ERROR_##NAME
+
+typedef union _var_data var_data;
+
+#define VAR_NEW(TYPE, DATA) var_new(VAR_PFX(TYPE), (var_data) DATA)
 
 #define VAR_ERROR(DATA) VAR_NEW(ERROR, { .error = ERROR_PFX(DATA) })
 
@@ -38,6 +46,15 @@ typedef enum {
     VAR_PFX(MODULE)
 } var_type;
 
+typedef enum _var_error {
+    ERROR_PFX(OK),
+    ERROR_PFX(FILE_NOT_FOUND),
+    ERROR_PFX(CANNOT_READ_FILE),
+    ERROR_PFX(INVALID_TOKEN_FOUND),
+    ERROR_PFX(MAX_TOKEN_LEN_EXCEEDED),
+    ERROR_PFX(INVALID_BYTES_FOR_CHAR)
+} var_error;
+
 typedef struct {
     uint8_t data[4];
 } var_char;
@@ -54,28 +71,41 @@ typedef struct {
 
 typedef struct _var_hash var_hash;
 
+typedef union _var_data {
+    var_error error;
+    int64_t i;
+    double f;
+    var_char c;
+    var_string* string;
+    var_file* file;
+    var_hash* hash;
+} var_data;
+
 typedef struct _var {
     var_type type;
-    union {
-        var_error error;
-        int64_t i;
-        double f;
-        var_char c;
-        var_string* string;
-        var_file* file;
-        var_hash* hash;
-    } data;
+    var_data data;
 } var;
 
+inline var* var_new(var_type type, var_data data) {
+    var* v = calloc(1, sizeof(var));
+    v->type = type;
+    v->data = data;
+    return v;
+}
+
+inline void var_free(var* v) {
+    free(v);
+}
+
 typedef struct _bucket {
-    var_string* key;
-    var value;
+    var* key;
+    var* value;
     struct _bucket* next;
 } bucket;
 
 typedef struct _var_hash {
     size_t size, len;
-    bucket* buckets[];
+    bucket* data[];
 } var_hash;
 
 

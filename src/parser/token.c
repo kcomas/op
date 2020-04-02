@@ -22,7 +22,7 @@ static void token_set_char(char c, token* t) {
 
 static bool token_check_len(token* t, var* error) {
     if (t->len >= t->size) {
-        *error = VAR_ERROR(MAX_TOKEN_LEN_EXCEEDED);
+        ERROR_UPDATE(error, MAX_TOKEN_LEN_EXCEEDED);
         return false;
     }
     return true;
@@ -131,7 +131,7 @@ bool tokenize_string_next(var string, token* t, var* error) {
             switch (c) {
                 case '>': return single_char(c, TOKEN_PFX(FILEWRITE), t);
                 default:
-                    *error = VAR_ERROR(INVALID_TOKEN_FOUND);
+                    ERROR_UPDATE(error, INVALID_TOKEN_FOUND);
                     return false;
             }
         case '?':
@@ -147,7 +147,7 @@ bool tokenize_string_next(var string, token* t, var* error) {
             }
             return true;
         default:
-            *error = VAR_ERROR(INVALID_TOKEN_FOUND);
+            ERROR_UPDATE(error, INVALID_TOKEN_FOUND);
             return false;
     }
 }

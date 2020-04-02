@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "../var/var.h"
 #include "../var/string.h"
+#include "../var/error.h"
 
 #define TOKEN_PFX(NAME) TOKEN_##NAME
 
