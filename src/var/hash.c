@@ -80,3 +80,22 @@ void hash_insert(var* key, var* value, var** hash) {
             var_free(tmp);
         }
 }
+
+var* hash_get(var* key, var* hash) {
+#if TYPECHECK
+    assert(key->type == VAR_PFX(STRING));
+#endif
+    size_t pos = hash_string(key) % hash->data.hash->size;
+    if (hash->data.hash->data[pos] == NULL) {
+        return VAR_ERROR(INVALID_HASH_KEY);
+    }
+    bucket* b = hash->data.hash->data[pos];
+    while (b != NULL) {
+        if (string_cmp(key, b->key) == 0) {
+            b->value->rc++;
+            return b->value;
+        }
+        b = b->next;
+    }
+    return VAR_ERROR(INVALID_HASH_KEY);
+}

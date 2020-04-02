@@ -21,3 +21,5 @@ var* string_clone_resize(size_t new_size, var* string) {
 #endif
     return string_copy(new_size, string->data.string->len, string->data.string->data);
 }
+
+extern inline int string_cmp(var* sa, var* sb);

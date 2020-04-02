@@ -17,3 +17,5 @@ void hash_free(var* hash);
 var* hash_clone_resize(size_t new_size, var* hash);
 
 void hash_insert(var* key, var* value, var** hash);
+
+var* hash_get(var* key, var* hash);
