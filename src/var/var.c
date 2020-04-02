@@ -16,7 +16,7 @@ var* var_clone(var* v) {
     }
 }
 
-var* var_copy(var* v) {
+var* var_assign(var* v) {
     switch (v->type) {
         case VAR_PFX(INT):
         case VAR_PFX(FLOAT):
