@@ -59,13 +59,13 @@ var* hash_clone_resize(size_t new_size, var* hash) {
     return new_hash;
 }
 
-void hash_insert(var* string, var* value, var** hash) {
+void hash_insert(var* key, var* value, var** hash) {
 #if TYPECHECK
-        assert(string->type == VAR_PFX(STRING));
+        assert(key->type == VAR_PFX(STRING));
         assert((*hash)->type == VAR_PFX(HASH));
 #endif
-        bucket* b = bucket_new(string, value);
-        size_t pos = hash_string(string) % (*hash)->data.hash->size;
+        bucket* b = bucket_new(key, value);
+        size_t pos = hash_string(key) % (*hash)->data.hash->size;
         if ((*hash)->data.hash->data[pos] == NULL) {
             (*hash)->data.hash->data[pos] = b;
         } else {
