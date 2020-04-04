@@ -66,14 +66,19 @@ void _hash_insert(var* key, var* value, var** hash, bool clone) {
         assert(key->type == VAR_PFX(STRING));
         assert((*hash)->type == VAR_PFX(HASH));
 #endif
-        bucket* b = bucket_new(key, value, clone);
         size_t pos = hash_string(key) % (*hash)->data.hash->size;
         if ((*hash)->data.hash->data[pos] == NULL) {
-            (*hash)->data.hash->data[pos] = b;
+            (*hash)->data.hash->data[pos] = bucket_new(key, value, clone);
         } else {
             bucket* current_bucket = (*hash)->data.hash->data[pos];
-            while (current_bucket->next != NULL) current_bucket = current_bucket->next;
-            current_bucket->next = b;
+            while (current_bucket->next != NULL) {
+                if (string_cmp(key, current_bucket->key)) {
+                    var_free(current_bucket->value);
+                    current_bucket->value = value;
+                }
+                current_bucket = current_bucket->next;
+            }
+            if (current_bucket->next == NULL) current_bucket->next = bucket_new(key, value, clone);
         }
         (*hash)->data.hash->len++;
         if ((*hash)->data.hash->len == (*hash)->data.hash->size) {
