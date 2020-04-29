@@ -3,6 +3,7 @@
 
 #include <ctype.h>
 #include "../var/var.h"
+#include "../var/char.h"
 #include "../var/string.h"
 #include "../var/error.h"
 
@@ -12,7 +13,7 @@ typedef enum {
     TOKEN_PFX(NONE),
     TOKEN_PFX(VAR),
     TOKEN_PFX(INT),
-    TOKEN_PFX(CHHAR),
+    TOKEN_PFX(CHAR),
     TOKEN_PFX(STRING),
     TOKEN_PFX(FILE),
     TOKEN_PFX(ASSIGN),

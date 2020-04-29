@@ -97,6 +97,17 @@ bool tokenize_string_next(var string, token *t, var *error) {
             finc(t);
             if (!next_until(string, '"', t, error)) return false;
             finc(t);
+            if (t->len == 2 && t->data[0] == '\\') {
+                t->type = TOKEN_PFX(CHAR);
+                return true;
+            }
+            if (t->len > 0 && t->len < 5) {
+                int8_t conts = char_conts(t->data[0]);
+                if (conts >= 0 && conts + 1 == (int8_t) t->len) {
+                    t->type = TOKEN_PFX(CHAR);
+                    return true;
+                }
+            }
             t->type = TOKEN_PFX(STRING);
             return true;
         case '\'':
@@ -168,7 +179,7 @@ void print_token(token *t) {
         "NONE",
         "VAR",
         "INT",
-        "CHHAR",
+        "CHAR",
         "STRING",
         "FILE",
         "ASSIGN",

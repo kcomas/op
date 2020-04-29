@@ -27,7 +27,7 @@ typedef enum {
 typedef struct {
     ast_load_type type;
     int8_t idx;
-    var_string *name;
+    var *name;
 } ast_load;
 
 #define AST_UOP_PFX(NAME) AST_UOP_##NAME
