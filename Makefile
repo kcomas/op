@@ -40,3 +40,4 @@ clean:
 	rm -f op
 	rm -f src/*.o
 	rm -f src/var/*.o
+	rm -f src/parser/*.o

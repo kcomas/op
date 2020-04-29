@@ -78,9 +78,9 @@ typedef union _var_data {
     int64_t i;
     double f;
     var_char c;
-    var_string* string;
-    var_file* file;
-    var_hash* hash;
+    var_string *string;
+    var_file *file;
+    var_hash *hash;
 } var_data;
 
 typedef struct _var {
@@ -89,28 +89,27 @@ typedef struct _var {
     var_data data;
 } var;
 
-inline var* var_new(var_type type, var_data data) {
-    var* v = calloc(1, sizeof(var));
+inline var *var_new(var_type type, var_data data) {
+    var *v = calloc(1, sizeof(var));
     v->type = type;
     v->rc = 1;
     v->data = data;
     return v;
 }
 
-var* var_clone(var* v);
+var *var_clone(var *v);
 
-var* var_copy(var* v);
+var *var_copy(var *v);
 
-void var_free(var* v);
+void var_free(var *v);
 
 typedef struct _bucket {
-    var* key;
-    var* value;
-    struct _bucket* next;
+    var *key, *value;
+    struct _bucket *next;
 } bucket;
 
 typedef struct _var_hash {
     size_t size, len;
-    bucket* data[];
+    bucket *data[];
 } var_hash;
 

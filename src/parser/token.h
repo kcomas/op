@@ -43,18 +43,18 @@ typedef struct {
     char data[];
 } token;
 
-inline token* token_new(size_t size) {
-    token* t = calloc(1, sizeof(token) + size);
+inline token *token_new(size_t size) {
+    token *t = calloc(1, sizeof(token) + size);
     t->size = size;
     t->fchar_idx = 1;
     t->fline_idx = 1;
     return t;
 }
 
-inline void token_free(token* t) {
+inline void token_free(token *t) {
     free(t);
 }
 
-bool tokenize_string_next(var string, token* t, var* error);
+bool tokenize_string_next(var string, token *t, var *error);
 
-void print_token(token* t);
+void print_token(token *t);

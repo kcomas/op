@@ -8,6 +8,6 @@
 #include "var.h"
 #include "string.h"
 
-var* file_open(char filename[]);
+var *file_open(char filename[]);
 
-var* file_read_to_string(var* file);
+var *file_read_to_string(var *file);

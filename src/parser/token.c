@@ -1,26 +1,26 @@
 
 #include "token.h"
 
-extern inline token* token_new(size_t len);
+extern inline token *token_new(size_t len);
 
-extern inline void token_free(token* t);
+extern inline void token_free(token *t);
 
-static void finc(token* t) {
+static void finc(token *t) {
     t->fchar_idx++;
     t->fpos++;
 }
 
-static void fline(token* t) {
+static void fline(token *t) {
     t->fchar_idx = 1;
     t->fpos++;
     t->fline_idx++;
 }
 
-static void token_set_char(char c, token* t) {
+static void token_set_char(char c, token *t) {
     t->data[t->len++] = c;
 }
 
-static bool token_check_len(token* t, var* error) {
+static bool token_check_len(token *t, var *error) {
     if (t->len >= t->size) {
         ERROR_UPDATE(error, MAX_TOKEN_LEN_EXCEEDED);
         return false;
@@ -28,7 +28,7 @@ static bool token_check_len(token* t, var* error) {
     return true;
 }
 
-static bool parse_var(var string, token* t, var* error) {
+static bool parse_var(var string, token *t, var *error) {
     char c = string.data.string->data[t->fpos];
     while (isalpha(c) || isdigit(c)) {
         token_set_char(c, t);
@@ -40,7 +40,7 @@ static bool parse_var(var string, token* t, var* error) {
     return true;
 }
 
-static bool parse_int(var string, token* t, var* error) {
+static bool parse_int(var string, token *t, var *error) {
     char c = string.data.string->data[t->fpos];
     while (isdigit(c)) {
         token_set_char(c, t);
@@ -53,7 +53,7 @@ static bool parse_int(var string, token* t, var* error) {
     return true;
 }
 
-static bool next_until(var string, char stop, token *t, var* error) {
+static bool next_until(var string, char stop, token *t, var *error) {
     char c = string.data.string->data[t->fpos];
     while (c != stop) {
         token_set_char(c, t);
@@ -64,14 +64,14 @@ static bool next_until(var string, char stop, token *t, var* error) {
     return true;
 }
 
-static bool single_char(char c, token_type type, token* t) {
+static bool single_char(char c, token_type type, token *t) {
     token_set_char(c, t);
     finc(t);
     t->type = type;
     return true;
 }
 
-bool tokenize_string_next(var string, token* t, var* error) {
+bool tokenize_string_next(var string, token *t, var *error) {
     t->char_idx = t->fchar_idx;
     t->line_idx = t->fline_idx;
     t->pos = t->fpos;
@@ -163,8 +163,8 @@ bool tokenize_string_next(var string, token* t, var* error) {
     }
 }
 
-void print_token(token* t) {
-    static const char* token_names[] = {
+void print_token(token *t) {
+    static const char *token_names[] = {
         "NONE",
         "VAR",
         "INT",

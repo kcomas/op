@@ -1,15 +1,15 @@
 
 #include "var.h"
 
-extern inline var* var_new(var_type type, var_data data);
+extern inline var *var_new(var_type type, var_data data);
 
-extern void hash_free(var* hash);
+extern void hash_free(var *hash);
 
-extern var* string_clone_resize(size_t new_size, var* string);
+extern var *string_clone_resize(size_t new_size, var *string);
 
-extern var* hash_clone_resize(size_t new_size, var* hash);
+extern var *hash_clone_resize(size_t new_size, var *hash);
 
-var* var_clone(var* v) {
+var *var_clone(var *v) {
     switch (v->type) {
         case VAR_PFX(STRING):
             return string_clone_resize(v->data.string->size, v);
@@ -20,7 +20,7 @@ var* var_clone(var* v) {
     }
 }
 
-var* var_copy(var* v) {
+var *var_copy(var *v) {
     switch (v->type) {
         case VAR_PFX(INT):
         case VAR_PFX(FLOAT):
@@ -32,7 +32,7 @@ var* var_copy(var* v) {
     }
 }
 
-void var_free(var* v) {
+void var_free(var *v) {
     switch (v->type) {
         case VAR_PFX(INT):
         case VAR_PFX(FLOAT):
