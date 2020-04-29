@@ -65,11 +65,9 @@ typedef struct {
     ast_var_list *args;
 } ast_call;
 
-typedef struct {
-    ast_stmt *else_stmt;
-    struct {
-        ast_stmt *cond, *body, *next;
-    } cond_stmt;
+typedef struct _ast_if {
+    ast_stmt *cond, *body;
+    struct _ast_if *next;
 } ast_if;
 
 typedef struct _ast_fuction ast_function;
