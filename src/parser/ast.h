@@ -87,6 +87,7 @@ typedef struct _ast_stmt {
 } ast_stmt;
 
 typedef struct _ast_fuction {
+    size_t num_args, num_locals;
     var_hash *sym_table;
     ast_stmt *stmt;
 } ast_function;
